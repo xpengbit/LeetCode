@@ -19,7 +19,7 @@ class Solution {
 public:
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
         ListNode* Dummy = new ListNode(0);
-        ListNode* root = Dummy;
+        ListNode* root = Dummy; 
         int carrier = 0;
         while( l1 != nullptr and l2 != nullptr){
             int tmp = l1->val + l2->val + carrier;
