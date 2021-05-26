@@ -8,7 +8,7 @@
 class Solution {
 public:
     int findDuplicate(vector<int>& nums) {
-        unordered_map<int, int> mp;
+        /*unordered_map<int, int> mp;
         int res = -1;
         for(int i : nums){
              ++mp[i];
@@ -17,7 +17,20 @@ public:
                  break;
              }
         }
-        return res;
+        return res;*/
+        /*hash set solution, time O(n), space O(n)*/
+        /*unordered_set<int> s;
+        for(int i : nums){
+            if(!s.insert(i).second) return i;
+        }
+        return -1;*/
+        /*sort solution, time O(nlogn), space o(1), but mutate the orginal arrary*/
+        sort(nums.begin(), nums.end());
+        for(int i = 1; i < nums.size(); i++){
+            if(nums[i-1] == nums[i])
+                return nums[i];
+        }
+        return -1;
     }
 };
 // @lc code=end
