@@ -49,7 +49,10 @@ public:
 
         /*Recurtive solution*/
         if(root == NULL) return root;
-
+        inorderTraversal(root);
+        head->left = pre;
+        pre->right = head;
+        return head;        
     }
 private:
     Node* pre = NULL, *head = NULL;
