@@ -19,7 +19,7 @@
 class Solution {
 public:
     bool isSymmetric(TreeNode* root) {
-        queue<TreeNode*> q1, q2;
+       /* queue<TreeNode*> q1, q2;
         q1.push(root);
         q2.push(root);
         while(!q1.empty() and !q2.empty() ){
@@ -38,19 +38,19 @@ public:
             q2.push(r->right);
             q2.push(r->left);
         }
-        return true;
+        return true;*/
+        return helper(root->left, root->right);
     }
 /*Recursion method*/    
-/*private:
+private:
     bool helper(TreeNode* p, TreeNode* q){
         if(p == NULL and q == NULL)
             return true;
-        if((p == NULL and q != NULL) or (p != NULL and q == NULL))
+        else if(p == NULL or q == NULL or p->val != q->val)
             return false;
-        if(p->val == q->val)
-            return helper(p->left, q->right) and helper(p->right, q->left);
-        return false;
-    }*/
+        
+        return helper(p->left, q->right) and helper(p->right, q->left);
+    }
 };
 // @lc code=end
 
