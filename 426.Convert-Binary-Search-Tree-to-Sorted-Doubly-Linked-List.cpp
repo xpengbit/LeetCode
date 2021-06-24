@@ -21,6 +21,7 @@ public:
 };
 */
 class Solution {
+    Node* pre = NULL, *head = NULL;
 public:
     Node* treeToDoublyList(Node* root) {
        /*Iterative solution*/
@@ -35,7 +36,7 @@ public:
             }
             root = s.top();
             s.pop();
-            if(first = NULL) first = root;
+            if(first == NULL) first = root;
             if(pre != NULL){
                 pre->right = root;
                 root->left = pre;
@@ -55,7 +56,6 @@ public:
         return head;        
     }
 private:
-    Node* pre = NULL, *head = NULL;
     void inorderTraversal(Node* root){
         if(root == NULL) return;
         inorderTraversal(root->left);
