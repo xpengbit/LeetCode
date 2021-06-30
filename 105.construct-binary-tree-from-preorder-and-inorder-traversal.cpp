@@ -18,12 +18,28 @@
  */
 class Solution {
 public:
+    vector<int> preorder, inorder;
+    int preorderIndex;
+    map<int, int> inorderMap;
     TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
-        int n = inorder.size();
+        /*int n = inorder.size();
         int m = 0;
-        return helper(preorder, inorder, 0, n, m);
+        return helper(preorder, inorder, 0, n, m);*/
+        this->preorder = preorder;
+        this->inorder = inorder;
+        int n = inorder.size();
+        for(int i = 0; i < n; i++) inorderMap[inorder[i]] = i;
+        return helper2(0, n-1);
     }
 private:
+    TreeNode* helper2(int inorderStart, int inorderEnd){
+        if(inorderStart > inorderEnd) return nullptr;
+        TreeNode* root = new TreeNode(preorder[preorderIndex++]);
+        int index = inorderMap[root->val];
+        root->left = helper2(inorderStart, index - 1);
+        root->right = helper2(index + 1, inorderEnd);
+        return root;
+    }
     TreeNode* helper(vector<int>& preorder, vector<int>& inorder, int l, int r, int& prestart){
         if(l >= r or prestart >= preorder.size()) return NULL;
         int index = 0;

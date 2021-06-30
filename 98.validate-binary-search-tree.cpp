@@ -18,10 +18,12 @@
  */
 class Solution {
 public:
-    vector<int> vi;
+    /*vector<int> vi;*/
+    long pre = LONG_MIN;
     bool isValidBST(TreeNode* root) {
         //return dfs(root, LONG_MIN, LONG_MAX);
-        bool res = true;
+        
+        /*bool res = true;
         in_order(root);
         for(int i = 1; i < vi.size(); i++){
             if(vi[i-1] > vi[i]){
@@ -29,7 +31,13 @@ public:
                 break;
             }
         }
-        return res;      
+        return res;*/
+        if(root == NULL) return true;
+        bool left = isValidBST(root->left);
+        if(!left) return false;
+        if(pre >= root->val) return false;
+        pre = root->val;
+        return isValidBST(root->right);
     }
 private:
     bool dfs(TreeNode* root, long int min_node, long int max_node){
@@ -38,13 +46,12 @@ private:
         return (root->val > min_node) and (root->val < max_node ) and dfs(root->left,min_node, root->val) && dfs(root->right,root->val, max_node);
     }
 
-    void in_order(TreeNode* root){
+    /*void in_order(TreeNode* root){
         if(root == NULL) return;
         in_order(root->left);
         vi.push_back(root->val);
         in_order(root->right);
-    }
-
+    }*/
 };
 // @lc code=end
 
