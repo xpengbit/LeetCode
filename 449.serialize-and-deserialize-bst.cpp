@@ -32,10 +32,10 @@ public:
 
 private:
     void serialize(TreeNode* root, string& s){
-        if(!root) return;
-        s.append(reinterpret_cast<const char*>(& root->val), sizeof(root->val)); 
-        serialize(root->left, s);
-        serialize(root->right, s);
+        if(root == NULL) return;
+        s.append(reinterpret_cast<const char*>(& root->val)); 
+        if(root->left) out << ' '<< serialize(root->left, out);
+        if(root->right) out << ' '<< serialize(root->right, out);
     }
 
     TreeNode* deserialize(const string& s, int& pos, int curMin, int curMax){

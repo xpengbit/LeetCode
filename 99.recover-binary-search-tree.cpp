@@ -27,6 +27,14 @@ public:
         second->val = tmp;
     }
 private:
+    void inorderTraversal(TreeNode* root){
+        if(root == NULL) return;
+        inorderTraversal(root->left);
+        if(first == NULL and root->val < pre->val) first = root;
+        if(first != NULL and root->val < pre->val) second = root;
+        pre = root;
+        inorderTraversal(root->right);
+    }
     void in_order(TreeNode* root){
         stack<TreeNode*> s;
         while(!s.empty() || root != NULL){
