@@ -16,6 +16,7 @@
  */
 class Solution {
 public:
+    /*All the nodes exist in the tree and unique*/
     TreeNode* lowestCommonAncestor(TreeNode* root, vector<TreeNode*> nodes) {
         if(!root) return NULL;
         set<TreeNode*> nodeSet;

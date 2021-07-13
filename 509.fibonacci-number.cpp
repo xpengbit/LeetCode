@@ -1,18 +1,18 @@
 /*
- * @lc app=leetcode id=70 lang=cpp
+ * @lc app=leetcode id=509 lang=cpp
  *
- * [70] Climbing Stairs
+ * [509] Fibonacci Number
  */
 
 // @lc code=start
 class Solution {
 public:
-    int climbStairs(int n) {
+    int fib(int n) {
         /*if(n < 2) return n;
         int dp[n + 1];
+        dp[0] = 0;
         dp[1] = 1;
-        dp[2] = 2;
-        for(int i = 3; i <=n; i++){
+        for(int i = 2; i <= n; i++){
             dp[i] = dp[i - 1] + dp[i - 2];
         }
         return dp[n];*/
@@ -22,7 +22,7 @@ public:
 private:
     vector<int> memo;
     int helper(int n){
-        if(n <= 2) return n;
+        if(n < 2) return n;
         if(memo[n] != 0) return memo[n];
         return memo[n] = helper(n - 1) + helper(n - 2);
     }
