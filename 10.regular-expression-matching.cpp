@@ -19,18 +19,18 @@ public:
             return isFirstMatch && isMatch(s.substr(1), p.substr(1));*/
         
         /*DP Solution*/
-        vector<vector<bool>> dp(s.length() + 1, vector<bool>(p.length() + 1, false));
+        int m = s.size(), n = p.size();
+        vector<vector<bool>> dp(m + 1, vector<bool>(n + 1, false));
         dp[0][0] = true;
-        for(int i = 1; i <= s.length(); i++){
-            for(int j = 1; j <= p.length(); j++){
-                bool firstMatch = p[i - 1] == s[j - 1] || p[j - 1] == '.';
-                if(p[j - 1] == '*')
-                    dp[i][j] = dp[i][j - 2] || firstMatch && dp[i - 1][j];
+        for(int i = 0; i <= m; i++){
+            for(int j = 1; j <= n; j++){
+                if( j > 1 && p[j - 1] == '*')
+                    dp[i][j] = dp[i][j - 2] || (i > 0 && (p[j - 2] == s[i - 1] || p[j - 2] =='.') && dp[i - 1][j]);
                 else
-                    dp[i][j] = firstMatch && dp[i - 1][j - 1];
+                    dp[i][j] = i > 0 && (s[i - 1] == p[j - 1] || p[j - 1] == '.') && dp[i - 1][j - 1];
             }
         }
-        return dp[s.length()][p.length()];
+        return dp[m][n];
         /*recursion + memorization*/    
         /*memo = vector<vector<int>>(s.length() + 1, vector<int>(p.length() + 1, -1));
         return helper(s, 0, p, 0);*/
