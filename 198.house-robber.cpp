@@ -25,6 +25,15 @@ public:
             间就不能抢， 第i-1没抢，第i间可抢可不抢*/
         }
         return dp[nums.size()];
+
+        /*no dp solution*/
+        /*int rob = 0, notrob = 0, n = nums.size();
+        for(int i = 0; i < n; i++){
+            int preRob = rob, preNotrob = notrob;
+            rob = preNotrob + nums[i];
+            notrob = max(preRob, preNotrob);
+        }
+        return max(rob, notrob);*/
     }
 };
 // @lc code=end
