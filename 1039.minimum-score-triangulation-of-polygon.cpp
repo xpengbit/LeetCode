@@ -20,7 +20,7 @@ public:
         }
         return dp[0][n - 1];
         
-        /*dfs + memo solution will be Time Limit Exceed*/
+        /*dfs + memo solution will be Time Limit Exceeded*/
         /*int n = values.size();
         memo = vector<vector<int>>(n, vector<int>(n, -1));
         return helper(values, 0, n - 1);*/

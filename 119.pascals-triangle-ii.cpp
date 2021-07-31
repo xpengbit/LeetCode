@@ -25,6 +25,7 @@ public:
                 res[j] += res[j - 1];
         }
         return res;
+        
     }
 };
 // @lc code=end
