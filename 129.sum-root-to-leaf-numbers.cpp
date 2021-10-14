@@ -19,17 +19,13 @@
 class Solution {
 public:
     int sumNumbers(TreeNode* root) {
-        int num = 0, sum = 0;
-        helper(root, num, sum);
-        return sum;            
+        return dfs(root, 0);            
     }
 private:
-    void helper(TreeNode* root, int num, int&sum){
-        if(root == NULL) return; 
-        num = 10*num + root->val;
-        if(!root->left and !root->right) sum += num;
-        helper(root->left, num, sum);
-        helper(root->right, num, sum);
+    int dfs(TreeNode* root, int sum){
+        if(root == NULL) 0; 
+        if(!root->left && !root->right) return 10*sum + root->val;
+        return dfs(root->left, sum*10 + root->val) + dfs(root->right, sum * 10 + root->val);
     }
 };
 // @lc code=end

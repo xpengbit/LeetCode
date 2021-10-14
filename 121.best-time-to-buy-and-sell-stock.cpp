@@ -8,6 +8,13 @@
 class Solution {
 public:
     int maxProfit(vector<int>& prices) {
+        /*Greedy Solution*/
+        /*int res = 0, buy =  INT_MAX;
+        for(int price : prices){
+            buy = min(buy, prices);
+            res = max(res, prices - buy);
+        }
+        return res;*/
         int n = prices.size();
         if(n == 0 || n == 1) return 0;
         vector<vector<int>> dp(n, vector<int>(2, 0));

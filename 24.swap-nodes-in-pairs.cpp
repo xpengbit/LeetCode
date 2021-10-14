@@ -18,7 +18,18 @@
 class Solution {
 public:
     ListNode* swapPairs(ListNode* head) {
-        if(head == NULL or head->next == NULL) return head;
+        if(head == NULL || head->next == NULL) return head;
+        ListNode* Dummy = new ListNode(-1), *pre = Dummy, *cur, *next;
+        Dummy->next = head;
+        for(cur = pre->next, next = cur->next; cur; pre = cur, cur = cur->next, next = cur ? cur->next : nullptr){
+            cur->next = next->next;
+            next->next = pre->next;
+            pre->next = next;
+        }
+
+        return Dummy->next;
+    }
+        /*if(head == NULL or head->next == NULL) return head;
         int k = 2;
         int count = 0;
         ListNode* cur = head;
@@ -29,7 +40,7 @@ public:
         }
         ListNode* pre = swapPairs(cur);
         return reverse(head, pre, k);        
-    }
+    }*/
 
     ListNode* reverse(ListNode* head, ListNode* pre,int k){
         while(k > 0){

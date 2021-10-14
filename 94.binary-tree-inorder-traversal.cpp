@@ -19,9 +19,43 @@
 class Solution {
 public:
     vector<int> inorderTraversal(TreeNode* root) {
-        vector<int> res;
+        /*Recursive Solution*/
+        /*vector<int> res;
         if(root == NULL) return res;
         inorder(root, res);    
+        return res;*/
+        
+        /*Iterative Solution 1*/
+        /*if(!root) return {};
+        vector<int> res;
+        stack<TreeNode*> st;
+        TreeNode* cur = root;
+        while(!st.empty() || cur){
+            if(cur){
+                st.push(cur);
+                cur = cur->left;
+            }
+            else{
+                cur = st.top(); st.pop();
+                res.push_back(cur->val);
+                cur = cur->right;
+            }
+        }
+        return res;*/
+        
+        /*Iterative Solution 2*/
+        if(!root) return {};
+        vector<int> res;
+        stack<TreeNode*> st;
+        while(!st.empty() || root){
+            while(root){
+                st.push(root);
+                root = root->left;
+            }
+            root = st.top(); st.pop();
+            res.push_back(root->val);
+            root = root->right;
+        }
         return res;
     }
 private:

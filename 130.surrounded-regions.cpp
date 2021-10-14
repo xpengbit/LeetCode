@@ -12,7 +12,7 @@ public:
         int row = board.size();
         int col = board[0].size();
 
-        for(int i = 0; i < row; i++){
+        for(int i = 0; i <67y row; i++){
             if(board[i][0] == 'O') dfs(i, 0, board);
             if(board[i][col-1] == 'O') dfs(i, col-1, board);
         }

@@ -26,9 +26,13 @@ public:
 class Solution {
 public:
     Node* connect(Node* root) {
-        if(root ==  NULL) return NULL;
-        helper(root);
-        return root;
+        /*Recursive Solution*/
+        /*if(root ==  NULL) return NULL;
+        if(root->left) root->left->next = root->right;
+        if(root->right) root->right->next = root->next ?  root->next->left : NULL;
+        connect(root->left);
+        connect(root->right);
+        return root;*/
 
         /* BFS*/
         /*queue<Node*> q;
@@ -45,15 +49,19 @@ public:
             }
         }
         return root;*/
-    }
-private:
-    void helper(Node* root){
-        if(root->left == NULL and root->right == NULL) return;
-        if(root->next and root->right)
-            root->right->next = root->next->left;
-        root->left->next = root->right;
-        helper(root->left);
-        helper(root->right);
+        /*Iterative Solution*/
+        if(!root) return NULL;
+        Node* start = root, *cur = NULL;
+        while(start->left){
+            cur = start;
+            while(cur){
+                cur->left->next = cur->right;
+                cur->right->next = cur->next ? cur->next->left : NULL;
+                cur = cur->next;
+            }
+            start = start->left;
+        }
+        return root;
     }
 };
 // @lc code=end

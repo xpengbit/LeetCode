@@ -29,7 +29,7 @@ public:
         if(lists.empty()) return NULL;
         ListNode* Dummy = new ListNode(-1);
         ListNode* cur = Dummy;
-        /*auto comp = [&](ListNode* x, ListNode* y){
+        /*auto comp = [](ListNode* x, ListNode* y){
             return x->val > y->val;
         };
         priority_queue<ListNode*, vector<ListNode*>, decltype(comp)> pq(comp);

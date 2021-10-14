@@ -19,27 +19,17 @@ class Solution {
 public:
     ListNode* insertionSortList(ListNode* head) {
         if(head == NULL) return NULL;
-        ListNode* Dummy = new ListNode(-1);
-        Dummy->next = head;
-        ListNode* pre = NULL;
-        while(head->next != NULL){
-            if(head->next->val < head->val){
-                pre = head->next;
-                head->next = head->next->next;
-                ListNode* tmp = Dummy;
-                while(true){
-                    if(tmp->next->val > pre->val){
-                        pre->next = tmp->next;
-                        tmp->next = pre;
-                        break;
-                    }
-                    tmp = tmp->next;
-                }
-            }
-            else
-                head = head->next;
+        ListNode* dummy = new ListNode(-1), *cur = dummy;
+        while(head){
+            ListNode* t = head->next;
+            cur = dummy;
+            while(cur->next && cur->next->val <= head->val)
+                cur = cur->next;
+            head->next = cur->next;
+            cur->next = head;
+            head = t;
         }
-        return Dummy->next;
+        return dummy->next;
     }
 };
 // @lc code=end

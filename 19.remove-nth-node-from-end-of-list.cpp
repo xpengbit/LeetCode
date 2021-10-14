@@ -18,19 +18,18 @@
 class Solution {
 public:
     ListNode* removeNthFromEnd(ListNode* head, int n) {
-        ListNode* Dummy = new ListNode(-1);
-        Dummy->next = head;
-        ListNode* fast = Dummy, *slow = Dummy;
+        if(head->next == NULL) return NULL;
+        ListNode* fast = head, *slow = head;
 
-        for(int i = 1;i <= n + 1; i++){
-            fast = fast->next;
-        }
-        while(fast != NULL){
+        for(int i = 1; i <= n; ++i) fast = fast->next;
+        if(!fast) return head->next; /*n恰好为list的长度。此时删除head节点*/
+
+        while(fast->next != NULL){
             fast = fast->next;
             slow = slow->next;
         }
         slow->next = slow->next->next;
-        return Dummy->next;
+        return head;
     }
 };
 // @lc code=end
