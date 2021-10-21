@@ -7,7 +7,7 @@ vector和string 优先于动态分配的数组。
 第二章 线性表
 
 2.1 数组
-2.1.1 Remove Duplicates from Sorted Array
+2.1.1 Remove Duplicates from Sorted Array (26)
 /*时间复杂度O(n),空间复杂度O(1)*/
 Class Solution{
 public:
@@ -22,6 +22,19 @@ public:
     }
 }
 
+Class Solution{
+public:
+    int removeDuplicates(vector<int>& nums){
+        int cur = 0, index = 0;
+        while(cur < nums.size()){
+            if(nums[index] == nums[cur]) cur++;
+            else nums[++index] == nums[cur++];
+        }
+        return nums.empty() ? 0 : index + 1;
+    }
+}
+
+
 /*使用STL，时间复杂度O(n),空间复杂度O(1)*/
 Class Solution{
 public:
@@ -30,7 +43,43 @@ public:
     }
 }
 
-2.1.2 Remove Duplicates from Sorted Array II
+Remove Element (27)
+class Solution {
+public:
+    int removeElement(vector<int>& nums, int val) {
+        int index = 0;
+        for(int i = 0; i < nums.size(); ++i)
+            if(nums[i] != val)
+                nums[index++] = nums[i];        
+        
+        return res;
+    }
+};
+
+Remove Duplicate Letters (316)
+class Solution {
+public:
+    string removeDuplicateLetters(string s) {
+        vector<int> visited(256);
+        vector<int> cnt(256);
+        string res = "0";
+        for(char c : s)  ++cnt[c];
+        for(char c : s){
+            --cnt[c];
+            if(visited[c]) continue;
+            while(c > res.back() && cnt[res.back()]){
+                visited[res.back()] = 0;
+                res.pop_back();
+            }
+            res += c;
+            visited[c] = 1;
+        }
+        return res.substr(1);        
+    }
+};
+
+
+2.1.2 Remove Duplicates from Sorted Array II  (80)
 /*上一题的follow up 最多允许两个重复*/
 Class Solution{
 public:
@@ -54,11 +103,22 @@ public:
             if(i > 0 && i < n - 1 && nums[i - 1] == nums[i] && nums[i + 1] == nums[i])
                 continue;
             nums[index++] = nums[i];
-        } 
+        }
+        return index; 
     }
 }
 
-2.1.3 Search in Rotated Sorted Array
+2.1.3 Search in Rotated Sorted Array  (33)
+
+Suppose an array sorted in ascending order is rotated at some pivot unknown to you beforehand.
+(i.e., [0,1,2,4,5,6,7] might become [4,5,6,7,0,1,2]).
+You are given a target value to search. If found in the array return its index, otherwise return -1.
+You may assume no duplicate exists in the array.
+Your algorithm's runtime complexity must be in the order of O(log n).
+Example 1:
+Input: nums = [4,5,6,7,0,1,2], target = 0
+Output: 4
+
 /**/
 Class Solution{
 public:
@@ -83,8 +143,9 @@ public:
         }
         return -1;
     }
+}
 
-2.1.4 Search in Rotated Sorted Array II
+2.1.4 Search in Rotated Sorted Array II  (81)
 Follow up for 2.1.3, what if duplicates are allows?
 
 Class Solution{
@@ -113,8 +174,9 @@ public:
         return false;
     }
 
-2.1.5 Median of Two Sorted Arrays
+2.1.5 Median of Two Sorted Arrays  (4)
 /*中位数需要判断长度是奇数or偶数*/
+/*首先，为了避免拷贝产生新的数组从而增加时间复杂度，使用两个变量i和j分别来标记数组 nums1 和 nums2 的起始位置。然后来处理一些 corner cases，比如当某一个数组的起始位置大于等于其数组长度时，说明其所有数字均已经被淘汰了，相当于一个空数组了，那么实际上就变成了在另一个数组中找数字，直接就可以找出来了。还有就是如果 K=1 的话，只要比较 nums1 和 nums2 的起始位置i和j上的数字就可以了。难点就在于一般的情况怎么处理？因为需要在两个有序数组中找到第K个元素，为了加快搜索的速度，可以使用二分法，那么对谁二分呢，数组么？其实要对K二分，意思是需要分别在 nums1 和 nums2 中查找第 K/2 个元素，注意这里由于两个数组的长度不定，所以有可能某个数组没有第 K/2 个数字，所以需要先 check 一下，数组中到底存不存在第 K/2 个数字，如果存在就取出来，否则就赋值上一个整型最大值（目的是要在 nums1 或者 nums2 中先淘汰 K/2 个较小的数字，判断的依据就是看 midVal1 和 midVal2 谁更小，但如果某个数组的个数都不到 K/2 个，自然无法淘汰，所以将其对应的 midVal 值设为整型最大值，以保证其不会被淘汰），若某个数组没有第 K/2 个数字，则淘汰另一个数组的前 K/2 个数字即可。举个例子来说吧，比如 nums1 = {3}，nums2 = {2, 4, 5, 6, 7}，K=4，要找两个数组混合中第4个数字，则分别在 nums1 和 nums2 中找第2个数字，而 nums1 中只有一个数字，不存在第二个数字，则 nums2 中的前2个数字可以直接跳过，为啥呢，因为要求的是整个混合数组的第4个数字，不管 nums1 中的那个数字是大是小，第4个数字绝不会出现在 nums2 的前两个数字中，所以可以直接跳过。*/
 class Solution {
 public:
     double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
@@ -123,7 +185,7 @@ public:
         if(total & 0x1)
             return findKth(nums1, 0, nums2, 0, total/2 + 1);
         else
-            return (findKth(nums1, 0, nums2, 0, total/2 + 1) + findKth(nums1, 0, nums2, 0, total/2 + 2))/2.0;
+            return (findKth(nums1, 0, nums2, 0, total/2) + findKth(nums1, 0, nums2, 0, total/2 + 1))/2.0;
     }
 preivate:
     static int findKth(vector<int>& nums1, int i, vector<int>& nums2, int j, int k){
@@ -150,7 +212,7 @@ public:
         for(auto i : nums) used[i] = false;
         for(auto i : nums){
             if(used[i]) continue;
-            length = 1;
+            int length = 1;
             used[i] = true;
             for(int j = i + 1; used.find(j) != used.end(); ++j){
                 used[j] = true;
@@ -189,7 +251,7 @@ public:
     vector<int> twoSum(vector<int>& nums, int target){
         unordered_map<int, int> m;
         for(int i = 0; i < nums.size(); ++i>){
-            int diff = target - num;
+            int diff = target - num[i];
             if(m.count(diff)) return {m[diff], i};
             m[nums[i]] = i; 
         }
@@ -233,7 +295,7 @@ public:
         int closest = 0;
         int diff = INT_MAX;
         sort(nums.begin(), nums.end());
-        for(int k = 0; k < nums.size(); ++k){
+        for(int k = 0; k < nums.size() - 2; ++k){
             int i = k + 1, j = nums.size() - 1;
             while(i < j){
                 int sum = nums[k] + nums[i] + nums[j];
@@ -259,15 +321,21 @@ public:
     vector<vector<int>> fourSum(vector<int>& nums, int target){
         if(nums.empty() || nums.size < 4) return {};
         vector<vector<int>> res;
+        //set<vector<int>> res;
         sort(nums.begin(), nums.end());
         for(int k = 0; k < nums.size() - 3; ++k){
             if(k > 0 && nums[k - 1] == nums[k]) continue;
             for(int l = k + 1; l < nums.size() - 2; ++l){
                 if(l > k + 1 && nums[l - 1] == nums[l]) continue;
                 int i = l + 1, j = nums.size() - 1;
-                while(i < j>){
-                    int sum = nums[k] + nums[l] + nums[i] + nums[j];
+                while(i < j){
+                    long sum = (long)nums[k] + nums[l] + nums[i] + nums[j];
                     if(sum == target){
+                        /*
+                        vector<int> tmp{nums[k], nums[g], nums[i], nums[j]};
+                        res.insert(tmp);
+                        ++i; --j;
+                        */
                         res.push_back({nums[k],nums[l],nums[i],nums[j]});
                         while(i < j && nums[i] == nums[i + 1]) ++i;
                         while(i < j && nums[j] == nums[j - 1]) --j;
@@ -307,11 +375,8 @@ public:
 2.1.12 Next Permutation (31)
 
 Implement next permutation, which rearranges numbers into the lexicographically next greater permutation of numbers.
-
 If such arrangement is not possible, it must rearrange it as the lowest possible order (ie, sorted in ascending order).
-
 The replacement must be in-place and use only constant extra memory.
-
 Here are some examples. Inputs are in the left-hand column and its corresponding outputs are in the right-hand column.
 
 1,2,3 → 1,3,2
@@ -327,7 +392,8 @@ public:
         int n = nums.size();
         for(int i = n - 2; i >=0; --i){
             if(nums[i] < nums[i + 1]){
-                for(int j = n - 1; j > i; --j){
+                int j;
+                for(j = n - 1; j > i; --j){
                     if(nums[j] > nums[i]) break;
                 }
                 swap(nums[i], nums[j]);
@@ -341,7 +407,7 @@ public:
 
 2.1.13 Permutation Sequence (60)
 
-这道题是让求出n个数字的第k个排列组合，由于其特殊性，我们不用将所有的排列组合的情况都求出来，然后返回其第k个，这里可以只求出第k个排列组合即可，那么难点就在于如何知道数字的排列顺序，可参见网友喜刷刷的博客，首先要知道当 n = 3 时，其排列组合共有 3! = 6 种，当 n = 4 时，其排列组合共有 4! = 24 种，这里就以 n = 4, k = 17 的情况来分析，所有排列组合情况如下：
+这道题是让求出n个数字的第k个排列组合，由于其特殊性，我们不用将所有的排列组合的情况都求出来，然后返回其第k个，这里可以只求出第k个排列组合即可，那么难点就在于如何知道数字的排列顺序，首先要知道当 n = 3 时，其排列组合共有 3! = 6 种，当 n = 4 时，其排列组合共有 4! = 24 种，这里就以 n = 4, k = 17 的情况来分析，所有排列组合情况如下：
 
 1234
 1243
@@ -381,7 +447,7 @@ public:
 3412 <--- k' = 4
 3421
 
-第三位此时从 1,2 中去一个，k' = 4，则此时的 k'' = 4 % (2!) = 0，如下所示，而剩下的每个数字出现 1！= 1 次，所以第三个数字的下标为 0 / 1 = 0，在 "12" 中即1被取出。
+第三位此时从 1,2 中取一个，k' = 4，则此时的 k'' = 4 % (2!) = 0，如下所示，而剩下的每个数字出现 1！= 1 次，所以第三个数字的下标为 0 / 1 = 0，在 "12" 中即1被取出。
 
 3412 <--- k'' = 0
 3421
@@ -393,7 +459,7 @@ public:
     string getPermutation(int n, int k){
         string res;
         string num = "123456789";
-        vector<int> f = (n, 1);
+        vector<int> f(n, 1);
         for(int i = 1; i < n; ++i) f[i] = f[i - 1] * i;
         k--;
         for(int i = n; i >= 1; --i){
@@ -407,7 +473,7 @@ public:
 }
 
 
-2.1.14 Valid Sudoku ()
+2.1.14 Valid Sudoku (36)
 Determine if a 9x9 Sudoku board is valid. Only the filled cells need to be validated according to the following rules:
 
 Each row must contain the digits 1-9without repetition.
@@ -433,7 +499,7 @@ public:
                 fill(visited.begin(), visited.end(), false);
                 for(int i = r * 3; i < r * 3 + 3; ++i){
                     for(int j = c * 3; j < c * 3 + 3; ++j){
-                        check(!board[i][j], visited) return false;
+                        if(!check(board[i][j], visited)) return false;
                     }
                 }
             }
@@ -5751,11 +5817,375 @@ Example 2:
 [1,2],[3,10],[12,16].
 This is because the new interval [4,9] overlaps with [3,5],[6,7],[8,10].
 
+/*遍历intervals, 先把不相交的都放进结果。最后插入重叠的部分*/
 class Solution {
 public:
     vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval) {
-        
+        vector<vector<int>> res;
+        size_t n = intervals.size(), cur = 0;
+        for(size_t i = 0; i < n; ++i){
+            if(intervals[i][1] < newInterval[0]){
+                res.push_back(intervals[i]);
+                cur++;
+            }
+            else if(newInterval[1] < intervals[i][0]) res.push_back(intervals[i]);
+            else{
+                newInterval[0] = min(newIntervals[0], intervals[i][0]);
+                newInterval[1] = max(newIntervals[1], intervals[i][1]);
+            }
+        }
+        res.insert(res.begin() + cur, newInterval);
+        return res;   
     }
 };
 
 
+15.4 Merge Intervals  (56)
+Given a collection of intervals, merge all overlapping intervals.
+For example, Given [1,3],[2,6],[8,10],[15,18], return [1,6],[8,10],[15,18]
+
+class Solution {
+public:
+    vector<vector<int>> merge(vector<vector<int>>& intervals) {
+        vector<vector<int>> res;
+        int n = intervals.size();
+        sort(intervals.begin(), intervals.end());
+        res.push_back(intervals[0]);
+        for(int i = 1; i < n; ++i){
+            if(res.back()[1] < intervals[i][0])
+                res.push_back(intervals[i]);
+            else
+                res.back()[1] = max(res.back()[1], intervals[i][1]);
+        }
+        return res;
+    }
+};
+
+/*可以新建一个空数组， 调用57题insert函数*/
+class Solution {
+public:
+    vector<vector<int>> merge(vector<vector<int>>& intervals) {
+        vector<vector<int>>  res;
+        int n = intervals.size();
+        for(int i = 0; i < n; ++i){
+            res = insert(res, intervals[i]);
+        }
+        return res;   
+    }
+private:
+    vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval) {
+        vector<vector<int>> res;
+        size_t n = intervals.size(), cur = 0;
+        for(size_t i = 0; i < n; ++i){
+            if(intervals[i][1] < newInterval[0]){
+                res.push_back(intervals[i]);
+                cur++;
+            }
+            else if(newInterval[1] < intervals[i][0]) res.push_back(intervals[i]);
+            else{
+                newInterval[0] = min(newIntervals[0], intervals[i][0]);
+                newInterval[1] = max(newIntervals[1], intervals[i][1]);
+            }
+        }
+        res.insert(res.begin() + cur, newInterval);
+        return res;   
+    }
+};
+
+
+15.5 Minimum Window Substring  (76)
+Given a string S and a string T , find the minimum window in S which will contain all the characters in
+T in complexity O(n).
+For example, S = "ADOBECODEBANC", T = "ABC"
+Minimum window is "BANC".
+Note:
+• If there is no such window in S that covers all characters in T , return the emtpy string "".
+• If there are multiple such windows, you are guaranteed that there will always be only one unique
+minimum window in S.
+/*Sliding Window */
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        if(s.empty() || s.empty()) return "";
+        string res = "";
+        vector<int> mp(128, 0);
+        int left = 0, cnt = t.size(), minLen = INT_MAX;
+        for(char c : t) ++mp[c];
+        for(int i = 0; i < s.size(); ++i){
+            if(--mp[s[i]] >= 0) --cnt;
+            while(cnt == 0){
+                if(minLen > i - left + 1){
+                    minLen = i - left + 1;
+                    res = s.substr(left, minLen);
+                }
+                if(++mp[s[left++]] > 0) ++cnt;
+            }
+        }
+        return res;    
+    }
+};
+
+
+15.6 Multiply Strings  (43)
+
+Given two numbers represented as strings, return multiplication of the numbers as a string.
+Note: The numbers can be arbitrarily large and are non-negative.
+      8 9
+      7 6
+ ------------
+      5 4
+    4 8
+    6 3
+  5 6      
+/*两数相乘得到的乘积的长度其实其实不会超过两个数字的长度之和，若 num1 长度为m，num2 长度为n，则 num1 x num2 的长度不会超过 m+n，还有就是要明白乘的时候为什么要错位，比如6乘8得到的 48 为啥要跟6乘9得到的 54 错位相加，因为8是十位上的数字，其本身相当于80，所以错开的一位实际上末尾需要补的0。还有一点需要观察出来的就是，num1 和 num2 中任意位置的两个数字相乘，得到的两位数在最终结果中的位置是确定的，比如 num1 中位置为i的数字乘以 num2 中位置为j的数字，那么得到的两位数字的位置为 i+j 和 i+j+1，明白了这些后，就可以进行错位相加了，累加出最终的结果。
+
+由于要从个位上开始相乘，所以从 num1 和 num2 字符串的尾部开始往前遍历，分别提取出对应位置上的字符，将其转为整型后相乘。然后确定相乘后的两位数所在的位置 p1 和 p2，由于 p2 相较于 p1 是低位，所以将得到的两位数 mul 先加到 p2 位置上去，这样可能会导致 p2 位上的数字大于9，所以将十位上的数字要加到高位 p1 上去，只将余数留在 p2 位置，这样每个位上的数字都变成一位。然后要做的是从高位开始，将数字存入结果 res 中，记住 leading zeros 要跳过，最后处理下 corner case，即若结果 res 为空，则返回 "0"，否则返回结果 res，*/
+
+class Solution {
+public:
+    string multiply(string num1, string num2) {
+        string res = "";
+        int m = num1.size(), n = num2.size();
+        vector<int> vals(m + n);
+        for(int i = m - 1; i >= 0; --i){
+            for(int j = n - 1; j >= 0; --j){
+                int mul = (num1[i] - '0') * (num2[j] - '0');
+                int p1 = i + j, p2 = i + j + 1, sum = mul + vals[p2];
+                vals[p1] += sum / 10;
+                vals[p2] = sum % 10;
+            }
+        }
+
+        for(int val : vals){
+            if(!res.empty() || val != 0) res.push_back(val + '0');
+        }
+
+        return res.empty() ? "0" : res;
+    }
+};
+
+
+
+15.7 Substring with Concatenation of All Words  (30)
+You are given a string, S, and a list of words, L, that are all of the same length. Find all starting indices of
+substring(s) in S that is a concatenation of each word in L exactly once and without any intervening characters.
+For example, given:
+S: "barfoothefoobarman"
+L: ["foo", "bar"]
+You should return the indices: [0,9].(order does not matter).
+
+class Solution {
+public:
+    vector<int> findSubstring(string s, vector<string>& words) {
+        if(s.empty() || words.empty()) return {};
+        vector<int> res;
+        int n = words.size(), len = words[0].size();
+        unordered_map<string, int> mp;
+        for(string word : words) ++mp[word];
+        for(int i = 0; i <= (int)s.size() - n * len; ++i){
+            int j = 0;
+            unordered_map<string, int> cnt;
+            for(j = 0; j < n; ++j){
+                string t = s.substr(i + j * len, len);
+                if(! mp.count(t)) break;
+                if(++cnt[t] > mp[t]) break;
+            }
+            if(j == n) res.push_back(i);
+        }
+        return res;
+    }
+};
+
+
+15.8 Pascal’s Triangle  (118)
+Given numRows, generate the first numRows of Pascal’s triangle.
+For example, given numRows = 5,
+Return
+[
+[1],
+[1,1],
+[1,2,1],
+[1,3,3,1],
+[1,4,6,4,1]
+]
+
+class Solution {
+public:
+    vector<vector<int>> generate(int numRows) {
+        vector<vector<int>> res(numRows, vector<int>());
+        for(int i = 0; i < numRow; ++i){
+            res[i].resize(i + 1, 1);
+            for(int j = 1; j < i; ++j){
+                res[i][j] = res[i - 1][j - 1] + res[i - 1][j];
+            }
+        }
+        return res;
+    }
+};
+
+15.9 Pascal’s Triangle II  (119)
+Given an index k, return the kth row of the Pascal’s triangle.
+For example, given k = 3,
+Return [1,3,3,1].
+Note: Could you optimize your algorithm to use only O(k) extra space?
+
+/*杨辉三角主要有下列五条性质：
+杨辉三角以正整数构成，数字左右对称，每行由1开始逐渐变大，然后变小，回到1。
+第n行的数字个数为n个。
+第n行的第k个数字为组合数 C_{n-1}^{k-1}。
+第n行数字和为 2^{n-1}。
+除每行最左侧与最右侧的数字以外，每个数字等于它的左上方与右上方两个数字之和（也就是说，第n行第k个数字等于第 n-1 行的第 k-1 个数字与第k个数字的和）。这是因为有组合恒等式：C_{n}^{i}=C_{n-1}^{i-1}+C_{n-1}^{i}。可用此性质写出整个杨辉三角形。*/
+
+class Solution {
+public:
+    vector<int> getRow(int rowIndex) {
+        vector<int> res(rowIndex + 1);
+        res[0] = 1;
+        for(int i = 1; i <= rowIndex; ++i){
+            for(int j = i; j >= 1; --j){
+                res[j] += res[j - 1];
+            }
+        }
+        return res;        
+    }
+};
+
+
+15.10 Spiral Matrix (54)
+Given a matrix of m × n elements (m rows, n columns), return all elements of the matrix in spiral order.
+For example, Given the following matrix:
+[
+[ 1, 2, 3 ],
+[ 4, 5, 6 ],
+[ 7, 8, 9 ]
+]
+You should return [1,2,3,6,9,8,7,4,5].
+
+class Solution {
+public:
+    vector<int> spiralOrder(vector<vector<int>>& matrix) {
+        if(matrix.empty() || matrix[0].empty()) return {};
+        vector<int> res;
+        int m = matrix.size(), n = matrix[0].size();
+        int left = 0, right = n - 1, up = 0, down = m - 1;
+        while(true){
+            for(int j = left; j <= right; ++j) res.push_back(matrix[up][j]);
+            if(++up > down) break;
+            for(int i = up; i <= down; ++i) res.push_back(matrix[i][right]);
+            if(--right < left) break;
+            for(int j = right; j >= left; --j) res.push_back(matrix[down][j]);
+            if(--down < up) break;
+            for(int i = down; i >= up; --i) res.push_back(matrix[i][left]);
+            if(++left > right) break;
+        }
+        return res;
+    }
+};
+
+
+
+15.11 Spiral Matrix II  (59)
+Given an integer n, generate a square matrix filled with elements from 1 to n2 in spiral order.
+For example, Given n = 3,
+You should return the following matrix:
+[
+[ 1, 2, 3 ],
+[ 8, 9, 4 ],
+[ 7, 6, 5 ]
+]
+
+class Solution {
+public:
+    vector<vector<int>> generateMatrix(int n) {
+        vector<vector<int>> res(n, vector<int>(n));
+        int begin = 0, end = n - 1;
+        int num = 1;
+        while(begin < end){
+            for(int j = begin; j < end; ++j) res[begin][j] = num++;
+            for(int i = begin; i < end; ++i) res[i][end] = num++;
+            for(int j = end; j > begin; --j) res[end][j] = num++;
+            for(int i = end; i > begin; --i) res[i][begin] = num++;
+            ++begin;
+            --end;
+        }
+
+        if(begin == end) res[begin][begin] = num;
+        return res;    
+    }
+};
+
+
+15.12 ZigZag Conversion
+The string "PAYPALISHIRING" is written in a zigzag pattern on a given number of rows like this: (you
+may want to display this pattern in a fixed font for better legibility)
+
+And then read line by line: "PAHNAPLSIIGYIR"
+Write the code that will take a string and make this conversion given a number of rows:
+string convert(string text, int nRows);
+convert("PAYPALISHIRING", 3) should return "PAHNAPLSIIGYIR".
+
+class Solution {
+public:
+    string convert(string s, int numRows) {
+        if(numRows <= 1) return s;
+        int i = 0, n = s.size();
+        string res;
+        vector<string> vec(numRows);
+        while(i < n){
+            for(int pos = 0; pos < numRows && i < n; ++pos)
+                vec[pos] += s[i++];
+            for(int pos = numRows - 2; pos >= 1 && i < n; --pos)
+                vec[pos] += s[i++]
+        }
+        for(string v : vec)
+            res += v;
+        return res;
+    }
+};
+
+class Solution {
+public:
+    string convert(string s, int numRows) {
+        if(numRows <= 1) return s;
+        int n = s.size(), pos = 0;
+        bool down = true;
+        string res;
+        vector<string> vec(numRows);
+        for(int i = 0; i < n; ++i){
+            vec[pos] += s[i];
+            if(down){
+                ++pos;
+                if(pos == numRows){
+                    pos = numRows - 2;
+                    down = false;
+                }
+            }
+            else{
+                --pos;
+                if(pos < 0){
+                    pos = 1;
+                    down = true;
+                }
+            }
+        }
+        for(string v : vec) res += v;
+        return res;
+    }
+};
+
+
+
+15.13 Divide Two Integers  (29)
+Divide two integers without using multiplication, division and mod operator.
+
+class Solution {
+public:
+    int divide(int dividend, int divisor) {
+        
+    }
+};
+
+15.14 Text Justification
+
+
+15.15 Max Points on a Line
