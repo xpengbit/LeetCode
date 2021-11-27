@@ -21,7 +21,7 @@ public:
         if(!root) return NULL;
         TreeNode* lNode = dfs(root, p->val);
         TreeNode* rNode = dfs(root, q->val);
-        return (lNode == NULL || rNode == NULL) ? NULL : lowestCommonAncestor(root, p, q);
+        return (lNode == NULL || rNode == NULL) ? NULL : lca(root, lNode, rNode);
     }
 private:
     TreeNode* dfs(TreeNode* cur, int target){
