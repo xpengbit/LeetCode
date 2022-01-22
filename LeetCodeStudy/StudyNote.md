@@ -509,7 +509,7 @@ public:
 private:
     bool check(char ch, vector<bool>& visited){
         if(ch == '.') return true;
-        if(visited[ch - '1']) return false;
+        if(visited[ch - '1']) return false;  /*注意这里 ch - '1'. 因为数组定义为0--8*/
         return visited[ch - '1'] = true;
     }
 }
@@ -648,7 +648,7 @@ public:
     }
 };
 
-2.1.18 Climbing Stairs
+2.1.18 Climbing Stairs  (70)
 You are climbing a stair case. It takes n steps to reach to the top.
 Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?
 
@@ -676,7 +676,7 @@ private:
     }
 };
 
-2.1.19 Gray Code
+2.1.19 Gray Code  (89)
 The gray code is a binary numeral system where two successive values differ in only one bit.
 Given a non-negative integer n representing the total number of bits in the code, print the sequence of gray code. A gray code sequence must begin with 0.
 For example, given n = 2, return [0,1,3,2]. Its gray code sequence is:
@@ -695,6 +695,22 @@ public:
         return res;
     }
 };
+
+/*Mirror Arrangement*/
+class Solution {
+public:
+    vector<int> grayCode(int n) {
+        vector<int> res{0};
+        for(int i = 0; i < n; ++i){
+            int m = res.size();
+            for(int j = m - 1; j >= 0; --j){
+                res.push_back(res[j] | 1 << i);
+            }
+        }
+        return res;    
+    }
+};
+
 
 2.1.20 Set Matrix Zeros (73)
 Given an m x n integer matrix matrix, if an element is 0, set its entire row and column to 0's, and return the matrix.
@@ -784,7 +800,8 @@ public:
     }
 };
 
-2.1.22 Candy
+2.1.22 Candy (135)  这个题与 1840， 1846 类似。 采用two-pass distribution
+
 There are N children standing in a line. Each child is assigned a rating value.
 You are giving candies to these children subjected to the following requirements:
 Each child must have at least one candy.
@@ -799,7 +816,7 @@ public:
         然后再从右向左遍历一遍，如果相邻两个左边的等级高，而左边的糖果又少的话，
         则左边糖果数为右边糖果数加一。最后再把所有小盆友的糖果数都加起来返回即可*/
         const size_t n = ratings.size();
-        int total = 0;
+        int total = 0;]]]]
         vector<int> res(n, 1);
         for(int i = 0; i < n - 1; ++i){
             if(ratings[i + 1] > ratings[i]) res[i + 1] = res[i] + 1;
@@ -811,8 +828,7 @@ public:
             total += num;
         }
         return total;
-    }
-};
+
 
 2.1.23 Single Number (136)
 Given an array of integers, every element appears twice except for one. Find that single one.
@@ -845,7 +861,7 @@ public:
         for (int i = 0; i < 32; ++i) {
             int sum = 0;
             for (int j = 0; j < nums.size(); ++j) {
-                sum += (nums[j] >> i) & 1;
+                sum += (nums[j] >> i) & 0x1;
             }
             res |= (sum % 3) << i;
         }
@@ -864,7 +880,7 @@ struct ListNode{
     ListNode(int x) : val = x, next(nullptr){}
 };
 
-2.2.1 Add Two Numbers ()
+2.2.1 Add Two Numbers (2)
 You are given two linked lists representing two non-negative numbers. The digits are stored in reverse
 order and each of their nodes contain a single digit. Add the two numbers and return it as a linked list.
 Input: (2 -> 4 -> 3) + (5 -> 6 -> 4)
@@ -909,9 +925,10 @@ public:
         ListNode* Dummy = new ListNode(-1, head);
         ListNode* cur = Dummy->next, *pre = Dummy;
         int i = 1;
-        while(i++ < left){
+        while(i < left){
             cur = cur->next;
             pre = pre->next;
+            i++;
         } 
         ListNode* node = pre;
         while(i++ <= right){
@@ -929,9 +946,12 @@ public:
         ListNode* Dummy = new ListNode(-1, head);
         ListNode* pre = Dummy;
         int i = 1;
-        while(i++ < left) pre = pre->next;
+        while(i < left) {
+            pre = pre->next;
+            i++;
+        }
         ListNode* cur = pre->next;
-        while(i++ <= right){
+        while(i++ < right){
             ListNode* t = cur->next;
             cur->next = t->next;
             t->next = pre->next;
@@ -943,7 +963,7 @@ public:
 };
 
 
-2.2.3 Partition List ()
+2.2.3 Partition List (86)
 Given a linked list and a value x, partition it such that all nodes less than x come before nodes greater
 than or equal to x.
 You should preserve the original relative order of the nodes in each of the two partitions.
@@ -990,7 +1010,6 @@ public:
         for(ListNode* pre = head, *cur = pre->next; cur; cur = pre->next){
             if(pre->val == cur->val){
                 pre->next = cur->next;
-                del cur;
             }
             else
                 pre = cur;
@@ -998,6 +1017,21 @@ public:
         return head;
     }
 };
+
+class Solution {
+public:
+    ListNode* deleteDuplicates(ListNode* head) {
+        if(head == NULL) return head;
+        ListNode* cur = head;
+        while(cur){
+            while(cur->next != NULL && cur->val == cur->next->val)
+                cur->next = cur->next->next;
+            cur = cur->next;
+        }
+        return head;
+    }
+};
+
 
 2.2.5 Remove Duplicates from Sorted List II (82)
 Given a sorted linked list, delete all nodes that have duplicate numbers, leaving only distinct numbers
@@ -1029,7 +1063,7 @@ public:
 };
 
 
-2.2.6 Rotate List
+2.2.6 Rotate List  
 Given a list, rotate the list to the right by k places, where k is non-negative.
 For example: Given 1->2->3->4->5->nullptr and k = 2, return 4->5->1->2->3->nullptr.
 
@@ -1087,7 +1121,7 @@ public:
     }
 }
 
-/*解法3： 使用快慢指针。 fast先走k步。然后快慢同时走。快指针到达末尾时，慢指针的next就是新的头。*/
+/*解法3： 使用快慢指针。 fast先走k步(k 要先 % n)。然后快慢同时走。快指针到达末尾时，慢指针的next就是新的头。*/
 
 
 2.2.7 Remove Nth Node From End of List (19)
@@ -1116,7 +1150,7 @@ public:
 };
 
 
-2.2.8 Swap Nodes in Pairs ()
+2.2.8 Swap Nodes in Pairs (24)
 Given a linked list, swap every two adjacent nodes and return its head.
 You may not modify the values in the list's nodes, only nodes itself may be changed.
 Example:
@@ -1148,12 +1182,16 @@ public:
         if(head == NULL || head->next == NULL) return head;
         ListNode* Dummy = new ListNode(-1);
         Dummy->next = head;
-        ListNode* pre = Dummy, *cur = Dummy->next, *next = cur->next;
-        for(; cur; pre = cur, cur = cur->next, next = cur ? cur->next : nullptr){
-            pre->next = next;
+        ListNode* pre = Dummy, *cur = head;
+        while(cur != NULL && cur->next = NULL){
+            ListNode* next = cur->next;
             cur->next = next->next;
-            next->next = cur;
+            next->next = pre->next;
+            pre->next = next;
+            pre = cur;
+            cur = cur->next;
         }
+        
         return Dummy->next;
     }
 };
@@ -1171,7 +1209,7 @@ public:
 }
 
 
-2.2.9 Reverse Node in K-Group
+2.2.9 Reverse Node in K-Group (25)
 Given a linked list, reverse the nodes of a linked list k at a time and return its modified list.
 If the number of nodes is not a multiple of k then left-out nodes in the end should remain as it is.
 You may not alter the values in the nodes, only nodes itself may be changed.
@@ -1184,9 +1222,8 @@ For k = 3, you should return: 3->2->1->4->5
 class Solution {
 public:
     ListNode* reverseKGroup(ListNode* head, int k) {
-        ListNode* dummy = new ListNode(-1);
+        ListNode* dummy = new ListNode(-1, head);
         ListNode* pre = dummy, *cur = dummy->next;
-        dummy->next = head;
         int num = 1;
         while(cur = cur->next) ++num;
         while(num >= k){
@@ -1256,7 +1293,7 @@ public:
 };
 
 
-2.2.11 Linked List Circle
+2.2.11 Linked List Circle  (141)
 Given a linked list, determine if it has a cycle in it.
 Follow up: Can you solve it without using extra space?
 
@@ -1274,7 +1311,7 @@ public:
 }
 
 
-2.2.12 Linked List Circle II
+2.2.12 Linked List Circle II  (142)
 Given a linked list, return the node where the cycle begins. If there is no cycle, return null.
 Follow up: Can you solve it without using extra space?
 /*这里还是要设快慢指针，不过这次要记录两个指针相遇的位置，当两个指针相遇了后，让其中一个指针从链表头开始，此时再相遇的位置就是链表中环的起始位置，为啥是这样呢，因为快指针每次走2，慢指针每次走1，快指针走的距离是慢指针的两倍。而快指针又比慢指针多走了一圈。所以 head 到环的起点+环的起点到他们相遇的点的距离 与 环一圈的距离相等。现在重新开始，head 运行到环起点 和 相遇点到环起点 的距离也是相等的，相当于他们同时减掉了 环的起点到他们相遇的点的距离。*/
@@ -1286,12 +1323,12 @@ public:
             slow = slow->next;
             fast = fast->next->next;
             if(slow == fast){
-                ListNode* slow2 = head;
-                while(slow2 != slow){
-                    slow2 = slow2->next;
+                fast = head;
+                while(fast != slow){
+                    fast = fast->next;
                     slow = slow->next;
                 }
-                return slow2;
+                return fast;
             }
         }
         return nullptr; 
@@ -1360,7 +1397,7 @@ public:
 };
 
 
-2.2.14 LRU Cache
+2.2.14 LRU Cache  (146)
 Design and implement a data structure for Least Recently Used (LRU) cache. It should support the
 following operations: get and set.
 get(key) - Get the value (will always be positive) of the key if the key exists in the cache, otherwise
@@ -1423,8 +1460,8 @@ public:
     bool isPalindrome(string s) {
         int left = 0, right = s.size() - 1;
         while(left < right){
-            if(!isalnum(s[left])) ++left;
-            else if(!isalnum(s[right])) --right;
+            if(!isAlphaNum(s[left])) ++left;
+            else if(!isAlphaNum(s[right])) --right;
             else if((s[left] + 32 - 'a') % 32 != (s[right] + 32 - 'a') % 32) return fase;
             else{
                 ++left;
@@ -1444,7 +1481,7 @@ private:
 
 
 3.2 Implement strStr() (28)
- Implement strStr().
+Implement strStr().
 Returns a pointer to the first occurrence of needle in haystack, or null if needle is not part of haystack.
 
 class Solution {
@@ -1520,12 +1557,12 @@ public:
         const int n = s.length();
         if(n < 2) return s;
         int maxLen = 0, start = 0;
-        for(int i = 0; i <  n; ){
+        for(int i = 0; i < n; ){
             if((n - i) <= maxLen / 2) break;
             int left = i, right = i;
-            while(right < n && s[right] == s[right + 1]) right++;
+            while(right < n - 1 && s[right] == s[right + 1]) right++;
             i = right + 1;
-            while(left > 0 && right < n && s[left] == s[right]){
+            while(left > 0 && right < n - 1 && s[left - 1] == s[right + 1]){
                 left--; right++;
             }
             if(maxLen < right - left + 1){
@@ -1678,7 +1715,7 @@ public:
         if(str.empty()) return "";
         for(int indx = 0; indx < strs[0].size(); ++indx){
             for(int j = 1; j < strs.size(); ++j){
-                if(strs[0][indx] != strs[i][indx]) return strs[0].substr(0, indx);
+                if(strs[0][indx] != strs[j][indx]) return strs[0].substr(0, indx);
             }
         }
         return strs[0];
@@ -1715,7 +1752,7 @@ Note: It is intended for the problem statement to be ambiguous. You should gathe
 front before implementing one.
 /*首先，从题目中给的一些例子可以分析出来，我们所需要关注的除了数字以外的特殊字符有空格 ‘ ’， 小数点 '.', 自然数 'e/E', 还要加上正负号 '+/-"， 除了这些字符需要考虑意外，出现了任何其他的字符，可以马上判定不是数字。下面我们来一一分析这些出现了也可能是数字的特殊字符：
 1. 空格 ‘ ’： 空格分为两种情况需要考虑，一种是出现在开头和末尾的空格，一种是出现在中间的字符。出现在开头和末尾的空格不影响数字，而一旦中间出现了空格，则立马不是数字。解决方法：预处理时去掉字符的首位空格，中间再检测到空格，则判定不是数字。
-2. 小数点 '.'：小数点需要分的情况较多，首先的是小数点只能出现一次，但是小数点可以出现在任何位置，开头(".3"), 中间("1.e2"), 以及结尾("1." ), 而且需要注意的是，小数点不能出现在自然数 'e/E' 之后，如 "1e.1" false, "1e1.1" false。还有，当小数点位于末尾时，前面必须是数字，如 "1."  true，" -." false。解决方法：开头中间结尾三个位置分开讨论情况。
+2.面 小数点 '.'：小数点需要分的情况较多，首先的是小数点只能出现一次，但是小数点可以出现在任何位置，开头(".3"), 中间("1.e2"), 以及结尾("1." ), 而且需要注意的是，小数点不能出现在自然数 'e/E' 之后，如 "1e.1" false, "1e1.1" false。还有，当小数点位于末尾时，前必须是数字，如 "1."  true，" -." false。解决方法：开头中间结尾三个位置分开讨论情况。
 3. 自然数 'e/E'：自然数的前后必须有数字，即自然数不能出现在开头和结尾，如 "e" false,  ".e1" false, "3.e" false, "3.e1" true。而且小数点只能出现在自然数之前，还有就是自然数前面不能是符号，如 "+e1" false, "1+e" false. 解决方法：开头中间结尾三个位置分开讨论情况。
 4. 正负号 '+/-"，正负号可以再开头出现，可以再自然数e之后出现，但不能是最后一个字符，后面得有数字，如  "+1.e+5" true。解决方法：开头中间结尾三个位置分开讨论情况。*/
 
@@ -1770,6 +1807,47 @@ public:
         else return false;
     }
 };
+
+ /*本题的主框架是找到科学记数法的标记“e”。“e”之前和之后的两个子字符串必须分别都是合法的“数”。但是“e”之前的子字符串允许是一个小数，后者只允许是整数。合法的小数的定义是：数字+最多一个小数点。合法的整数的定义是：数字+没有小数点。
+任何正负号，只可能出现在合法的数（无论整数或小数）的第一个字符的位置。
+可能需要单独判断的corner cases是：只有小数点或空或“e”的字符串都不是合法的数。*/
+class Solution {
+public:
+    bool isNumber(string s) {
+        while(s.size() > 0 && s.back() == ' ') s.pop_back();
+        while(s.size() > 0 && s[0] == ' ') s.erase(s.begin());
+        if(s == "") return false;
+        int cntE = 0, posE = -1;
+        for(int i = 0; i < s.size(); ++i){
+            if(s[i] == 'e' || s[i] == 'E'){
+                ++cntE;
+                posE = i;
+            }
+        }
+        if(cntE > 1) return false;
+        if(cnt == 0) return isOk(s, 1);
+
+        return isOk(s.substr(0, posE), 1) && isOk(s.substr(posE + 1), 0);   
+    }
+
+    bool isOk(string s, int k){
+        for(int i = 0; i < s.size(); ++i)
+            if((s[i] == '+' || s[i] == '-') && i != 0)
+                return false;
+        if(s[0] == '+' || s[0] == '-')
+            s.erase(s.begin());
+        if(s == "" || s == ".") return false;
+        
+        int cntDot = 0;
+        for(int i = 0; i < s.size(); ++i){
+            if(s[i] == '.') cntDot++;
+            else if(!isdigit(s[i])) return false;
+        }
+
+        return cntDot <= k;
+    }
+};
+
 
 3.10 Integer to Roman
 Given an integer, convert it to a roman numeral.

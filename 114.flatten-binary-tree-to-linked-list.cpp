@@ -16,7 +16,7 @@
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
-class Solution {
+/*class Solution {
 public:
     void flatten(TreeNode* root) {
         postorder(root);
@@ -41,6 +41,24 @@ private:
         else if(leftlast) return leftlast;
         return root;
     }
+};*/
+class Solution {
+public:
+    void flatten(TreeNode* root) {
+        if(!root) return;
+        if(root->left != NULL){
+            flatten(root->left);
+            flatten(root->right);
+            TreeNode* tmp = root->left;
+            while(tmp->right) tmp = tmp->right;
+            tmp->right = root->right;
+            root->right = root->left;
+            root->left = NULL;
+        }
+        else
+            flatten(root->right);
+    }
 };
+
 // @lc code=end
 

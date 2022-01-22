@@ -22,7 +22,9 @@ public:
         ListNode* Dummy = new ListNode(-1), *pre = Dummy, *cur = pre;
         Dummy->next = head;
         int num = 0;
-        while(cur != NULL) num++;
+        while(cur != NULL) {
+            num++; cur = cur->next;
+        }
         while(num >= k){
             cur = pre->next;
             for(int i = 1; i < k; ++i){ /*这里i小于k，因为cur->next也处理了*/

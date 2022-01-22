@@ -21,18 +21,17 @@ public:
             }
         }
         return res;*/
-        for(int i = 0; i < nums.size(); i++)
-            if(nums[i] == 0) nums[i] = -1;
+        
+        //HASH + prefix sum, 遇到1, +1, 遇到0， -1
+        int res = 0, sum = 0;
         unordered_map<int, int> mp;
         mp[0] = -1;
-        int prefixSum = 0;
-        int res = 0;
         for(int i = 0; i < nums.size(); i++){
-            prefixSum += nums[i];
-            if(mp.count(prefixSum))
-                res = max(res, i - mp[prefixSum]);
+            sum += (nums[i] == 0 ? -1 : 1);
+            if(mp.count(sum))
+                res = max(res, i - mp[sum]);
             else
-                mp[prefixSum] = i;
+                mp[sum] = i;
         }
         return res;
     }

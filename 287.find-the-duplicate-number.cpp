@@ -31,6 +31,20 @@ public:
                 return nums[i];
         }
         return -1;
+
+        //binary search by value
+        int n = nums.size();
+        int l = 0, r = n - 1;
+        while(l < r){
+            int mid = l + (r - l) / 2;
+            int cnt = 0;
+            for(int x : nums)
+                cnt += (x <= mid);
+            
+            if(cnt > mid) r = mid;
+            else l = mid + 1;
+        }
+        return l;
     }
 };
 // @lc code=end

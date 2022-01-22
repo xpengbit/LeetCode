@@ -19,12 +19,16 @@ class Solution {
 public:
     ListNode* swapPairs(ListNode* head) {
         if(head == NULL || head->next == NULL) return head;
-        ListNode* Dummy = new ListNode(-1), *pre = Dummy, *cur, *next;
+        ListNode* Dummy = new ListNode(-1), *pre = Dummy, *cur;
         Dummy->next = head;
-        for(cur = pre->next, next = cur->next; cur; pre = cur, cur = cur->next, next = cur ? cur->next : nullptr){
+        cur = head;
+        while(cur != NULL && cur->next != NULL){
+            ListNode* next = cur->next;
             cur->next = next->next;
             next->next = pre->next;
             pre->next = next;
+            pre = cur;
+            cur = cur->next;
         }
 
         return Dummy->next;

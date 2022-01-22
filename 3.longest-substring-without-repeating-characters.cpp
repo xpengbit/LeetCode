@@ -21,15 +21,24 @@ public:
             }
         }
         return longest;*/
-        /*Test Case "abcabcbb"*/
-        int res = 0, left = -1, n = s.size();
-        unordered_map<int, int> mp;
-        for(int i = 0; i < n; i++){
-            if(mp.count(s[i]) && mp[s[i]] > left) left = mp[s[i]];
-            mp[s[i]] = i;
-            res = max(res, i - left);
+        vector<int> mp(128, -1);
+        int res = 0, i = -1, n = s.size();
+        for(int j = 0; j < n; ++j){
+            i = max(i, mp[s[j]]);
+            mp[s[j]] = j;
+            res = max(res, j - i);
         }
         return res;
+
+        /*Test Case "abcabcbb"*/
+        /*int res = 0, i = -1, n = s.size();
+        unordered_map<int, int> mp;
+        for(int j = 0; j < n; j++){
+            if(mp.count(s[j]) && mp[s[j]] > i)  i = mp[s[j]];
+            mp[s[j]] = j;
+            res = max(res, j - i);
+        }
+        return res;*/
     }
 };
 // @lc code=end

@@ -8,28 +8,26 @@
 class Solution {
 public:
     bool search(vector<int>& nums, int target) {
-        int hi = nums.size()-1, lo = 0;
-
-        while(lo <= hi){
-            int mid = lo + (hi-lo)/2;
+        int l = 0, r = nums.size();
+        while(l < r){
+            int mid = l + (r - l) / 2;
             if(nums[mid] == target) return true;
-            
-            if(nums[lo] < nums[mid] or nums[mid] > nums[hi]){
-                if(target > nums[mid] or target < nums[lo])
-                    lo = mid + 1;
+            if(nums[l] < nums[mid]){
+                if(nums[l] <= target && nums[mid] > target)
+                    r = mid;
                 else
-                    hi = mid - 1;
+                    l = mid + 1;
             }
-            else if(nums[mid] < nums[hi] or nums[lo] > nums[mid]){
-                if(target < nums[mid] or target > nums[hi])
-                    hi = mid -1;
-                else 
-                    lo = mid + 1;
+            else if(nums[l] > nums[mid]){
+                if(nums[mid] < target && target <= nums[r - 1])
+                    l = mid + 1;
+                else
+                    r = mid;
             }
             else
-                hi--;
+                ++l;
         }
-        return false;    
+        return false;
     }
 };
 // @lc code=end

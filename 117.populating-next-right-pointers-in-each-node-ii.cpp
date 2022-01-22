@@ -31,7 +31,6 @@ public:
         Node* childHead = NULL;
         Node* child = NULL;
         while(parent != NULL){
-            while(parent != NULL){
                 if(parent->left != NULL){
                     if(childHead == NULL){
                         childHead = parent->left;
@@ -51,11 +50,12 @@ public:
                     child = parent->right;
                 }
                 parent = parent->next;
-                }
+                if(parent == NULL){
                 parent = childHead;
                 childHead = NULL;
                 child = NULL;
             }
+        }
         return root;    
     }
 /*private:

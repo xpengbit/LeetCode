@@ -11,11 +11,9 @@ public:
         vector<int> res;
         unordered_map<int, vector<int>> graph;
         vector<int> indegree(numCourses); 
-        for(int i = 0; i < prerequisites.size(); i++){
-            int start = prerequisites[i][1];
-            int end = prerequisites[i][0];
-            indegree[end]++;
-            graph[start].push_back(end);
+        for(auto pre : prerequisites){
+            graph[pre[1]].push_back(pre[0]);
+            indegree[pre[0]]++;
         }
         queue<int> q;
         for(int i = 0; i < numCourses; i++){
@@ -24,8 +22,7 @@ public:
         }
         int course = 0;
         while(!q.empty()){
-            int tmp = q.front();
-            q.pop();
+            int tmp = q.front(); q.pop();
             course++;
             res.push_back(tmp);
             for(int adj : graph[tmp]){

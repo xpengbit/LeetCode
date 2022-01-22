@@ -8,23 +8,21 @@
 class Solution {
 public:
     int search(vector<int>& nums, int target) {
-        int hi = nums.size()-1;
-        int lo = 0;
-
-        while(lo <= hi){
-            int mid = lo + (hi-lo)/2;
+        int l = 0, r = nums.size();
+        while(l < r){
+            int mid = l + (r - l) / 2;
             if(nums[mid] == target) return mid;
-            if(nums[lo] <= nums[mid]){
-                if(target > nums[mid] or target < nums[lo])
-                    lo = mid + 1;
+            if(nums[l] <= nums[mid]){
+                if(nums[l] <= target && nums[mid] > target)
+                    r = mid;
                 else
-                    hi = mid - 1;
+                    l = mid + 1;
             }
             else{
-                if(target > nums[hi] or target < nums[mid])
-                    hi = mid - 1;
+                if(nums[mid] < target && nums[r - 1] >= target)
+                    l = mid + 1;
                 else
-                    lo = mid + 1;
+                    r = mid;
             }
         }
         return -1;

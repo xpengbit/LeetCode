@@ -15,7 +15,7 @@
  *     ListNode(int x, ListNode *next) : val(x), next(next) {}
  * };
  */
-class Solution {
+/*class Solution {
 public:
     ListNode* rotateRight(ListNode* head, int k) {
         if(head == NULL or head->next == NULL or k == 0) return head;
@@ -44,6 +44,38 @@ public:
             cur = cur->next;
         }
         return len;
+    }
+};*/
+
+class Solution {
+public:
+    ListNode* rotateRight(ListNode* head, int k) {
+        if(head == NULL || k == 0) return head;
+        ListNode* cur = head;
+        int n = 1;
+        while(cur->next){
+            cur = cur->next;
+            n++;
+        }
+
+        k %= n;
+        if(k == 0) return head;
+        
+        ListNode* fast = head, *slow = head;
+        for(int i = 0; i < k; ++i){
+            fast = fast->next;
+        }
+        if(!fast) return head;
+        while(fast->next){
+            fast = fast->next;
+            slow = slow->next;
+        }
+
+        ListNode* newHead = slow->next;
+        slow->next = NULL;
+        fast->next = head;
+
+        return newHead;
     }
 };
 // @lc code=end

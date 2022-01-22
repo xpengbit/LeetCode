@@ -25,6 +25,7 @@ public:
         return res;*/
         vector<vector<int>> res;
         vector<int> tmp;
+        sort(nums.begin(), nums.end());
         dfs(nums, 0, tmp, res);
         return res;
     }

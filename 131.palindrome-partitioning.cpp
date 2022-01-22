@@ -15,7 +15,6 @@ public:
     }
     vector<vector<string>> partition(string s) {
        if(s.empty()) return {};
-       int n = s.size();
        vector<vector<string>> res;
        vector<string> tmp;
        dfs(s, 0, tmp, res);

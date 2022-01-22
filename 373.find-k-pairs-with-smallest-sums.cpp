@@ -5,7 +5,9 @@
  */
 
 // @lc code=start
-class Solution {
+
+//Binary Search by value.
+/*class Solution {
 public:
     vector<vector<int>> kSmallestPairs(vector<int>& nums1, vector<int>& nums2, int k) {
         long lower = nums1[0] + nums2[0], upper = nums1.back() + nums2.back();
@@ -46,6 +48,42 @@ private:
             while(j >= 0 && nums1[i] + nums2[j] > m)
                 --j;
             res += j + 1;
+        }
+        return res;
+    }
+};
+*/
+class Solution {
+    struct cmp{
+        bool operator()(pair<int, int> a, pair<int, int> b){
+            return a.first > b.first;
+        }
+    };
+public:
+    vector<vector<int>> kSmallestPairs(vector<int>& nums1, vector<int>& nums2, int k) {
+        vector<vector<int>> res;
+        int m = nums1.size(), n = nums2.size();
+        if(m == 0 || n == 0) return res;
+        priority_queue<pair<int, int>, vector<pair<int, int>>, cmp> q;
+        vector<vector<int>> visited(m, vector<int>(n, 0));
+        q.push({nums1[0] + nums2[0], 0});
+        visited[0][0] = 1;
+        int count = 0; 
+        while(count < k && !q.empty()){
+            int i = q.top().second / n ;
+            int j = q.top().second % n;
+            count++;
+            res.push_back({nums1[i], nums2[j]});
+            q.pop();
+
+            if(i + 1 < m && j < n && visited[i + 1][j] == 0){
+                q.push({nums1[i + 1] + nums2[j], (i + 1) * n + j});
+                visited[i + 1][j] = 1;
+            }
+            if(i < m && j + 1 < n && visited[i][j + 1] == 0){
+                q.push({nums1[i] + nums2[j + 1], i * n + j + 1});
+                visited[i][j + 1] = 1;
+            } 
         }
         return res;
     }

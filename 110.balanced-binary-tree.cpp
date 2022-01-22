@@ -20,18 +20,20 @@ class Solution {
 public:
     bool isBalanced(TreeNode* root) {
         if(root == NULL) return true;
-        int lh = deepth(root->left);
-        int rh = deepth(root->right);
-        return abs(lh-rh) <= 1 and isBalanced(root->left) and isBalanced(root->right);       
+        if(deepth(root) == -1)
+            return false;
+        else
+            return true;
     }
 private:
     int deepth(TreeNode* root){
         if(root == NULL) return 0;
         int dl = deepth(root->left);
         int dr = deepth(root->right);
-
-        int deep = max(dl, dr) + 1;
-        return deep;
+        if(dl == -1 || dr == -1 || abs(dl - dr) > 1)
+            return -1;
+        else
+            return max(dl, dr) + 1;
     }
 };
 // @lc code=end

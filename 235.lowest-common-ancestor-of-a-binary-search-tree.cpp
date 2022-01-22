@@ -26,8 +26,8 @@ public:
         }
 
         /*recursion solution*/
-        /*if(root->val < p->val and root->val < q->val) lowestCommonAncestor(root->right, p, q);
-        else if(root->val > p->val and root->val > q->val) lowestCommonAncestor(root->left, p, q);
+        /*if(root->val < p->val and root->val < q->val) return lowestCommonAncestor(root->right, p, q);
+        else if(root->val > p->val and root->val > q->val) return lowestCommonAncestor(root->left, p, q);
         return root;*/
     }
 };

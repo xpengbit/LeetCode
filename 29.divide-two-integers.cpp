@@ -10,17 +10,16 @@ public:
     int divide(int dividend, int divisor) {
         if(dividend == INT_MIN and divisor == -1) return INT_MAX;
         bool isNegative = (dividend > 0 and divisor < 0) or (dividend < 0 and divisor > 0);
-        long long a = abs((long long)dividend);
-        long long b = abs((long long)divisor);
-        long long res = 0;
-        int shift = 31;
-        
+        long long a = labs(dividend), b = labs(divisor), res = 0;
+        if(b == 1) return isNegative ? -a : a;
         while(a >= b){
-            while(a < (b << shift)){
-                shift--;
+            long c = b, count = 1;
+            while(a >= (c << 1)){
+                c <<= 1;
+                count <<= 1;
             }
-            a -= b << shift;
-            res += 1 << shift;
+            a -= c;
+            res += count;
         }
 
         return isNegative ? -res : res;

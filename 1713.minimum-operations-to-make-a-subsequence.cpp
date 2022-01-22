@@ -8,7 +8,25 @@
 class Solution {
 public:
     int minOperations(vector<int>& target, vector<int>& arr) {
-        unordered_map<int, int> targetMap;
+        unordered_map<int, int> Map;
+        for(int i = 0; i < target.size(); ++i)
+            Map[target[i]] = i;
+        
+        vector<int> q;
+        for(int a : arr){
+            if(!Map.count(a)) continue;
+            int x = Map[a];
+            auto it = lower_bound(q.begin(), q.end(), x);
+            if(it == q.end())
+                q.push_back(x);
+            else
+                *it = x;
+        }
+
+        return target.size() - q.size();
+        
+        
+        /*unordered_map<int, int> targetMap;
         vector<int> nums(arr.size());
         for(int i = 0; i < target.size(); i++) targetMap[target[i]] = i;
         for(int i = 0; i < arr.size(); i++){
@@ -19,9 +37,9 @@ public:
         }
         return target.size() - lengthOfLIS(nums);
     }
-private:
-    /*把target数组元素如果在arr中存在的话， 把target元素的位置存成一个数组，然后找这个数组的LIC*/
-    int lengthOfLIS(vector<int> nums){
+private:*/
+    /*target数组元素如果在arr中存在的话， 把target元素的位置存成一个数组，然后找这个数组的LIC*/
+    /*int lengthOfLIS(vector<int> nums){
         vector<int> dp(nums.size());
         int len = 0;
         int size = 0;
@@ -43,7 +61,7 @@ private:
             else 
                 r = mid;
         }
-        return l;
+        return l;*/
     }
 };
 // @lc code=end

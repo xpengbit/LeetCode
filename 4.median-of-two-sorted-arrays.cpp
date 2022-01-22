@@ -8,7 +8,7 @@
 class Solution {
 public:
     double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
-        const int m = nums1.size(), n = nums2.size();
+        /*const int m = nums1.size(), n = nums2.size();
         int total = m + n;
         if(total & 0x1)
             return findKth(nums1, 0, nums2, 0, total/2 + 1);
@@ -26,7 +26,27 @@ private:
         if(midVal1 < midVal2)
             return findKth(nums1, i + k/2, nums2, j, k - k/2);
         else
-            return findKth(nums1, i, nums2, j + k/2, k - k/2);
+            return findKth(nums1, i, nums2, j + k/2, k - k/2);*/
+
+        const int m = nums1.size(), n = nums2.size();
+        int total = m + n;
+        if(total & 0x1)
+            return findKth(nums1, 0, m, nums2, 0, n, total / 2 + 1);
+        else
+            return (findKth(nums1, 0, m, nums2, 0, n, total / 2) + findKth(nums1, 0, m, nums2, 0, n, total / 2 + 1)) / 2.0;
+    }
+private:
+    int findKth(vector<int>& nums1, int i , int m, vector<int>& nums2, int j, int n, int k){
+        if(m > n) return findKth(nums2, j, n, nums1, i, m, k);
+        if(m == 0) return nums2[j + k - 1];
+        if(k == 1) return min(nums1[i], nums2[j]);
+
+        int k1 = min(m, k / 2);
+        int k2 = k - k1;
+        if(nums1[i + k1 - 1] < nums2[j + k2 - 1])
+            return findKth(nums1, i + k1, m - k1, nums2, j, n, k - k1);        
+        else
+            return findKth(nums1, i, m, nums2, j + k2, n - k2, k - k2);
     }
 };
 // @lc code=end
