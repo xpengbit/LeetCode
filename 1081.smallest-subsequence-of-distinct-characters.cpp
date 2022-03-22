@@ -1,18 +1,17 @@
 /*
- * @lc app=leetcode id=316 lang=cpp
+ * @lc app=leetcode id=1081 lang=cpp
  *
- * [316] Remove Duplicate Letters
+ * [1081] Smallest Subsequence of Distinct Characters
  */
 
 // @lc code=start
 class Solution {
 public:
-    string removeDuplicateLetters(string s) {
+    string smallestSubsequence(string s) {
         unordered_map<char, int> Map;
         for(char c : s)
             Map[c]++;
-
-        vector<int> visited(256, 0);
+        vector<int> visited(256);
         string str;
         for(char c : s){
             if(visited[c]){
@@ -25,12 +24,13 @@ public:
                     str.pop_back();
                 }
                 str.push_back(c);
-                visited[c] = 1;
                 Map[c]--;
+                visited[c] = 1;
             }
         }
-        return str; 
+        return str;
     }
 };
 // @lc code=end
-
+//维护一个递增序列。如果新来的c已经用过，则continue;
+//如果新来的c大于str最后一个字母，则看最后一个字母count是否>0, 如果还有。则弹出。

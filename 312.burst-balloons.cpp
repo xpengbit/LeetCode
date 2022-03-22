@@ -7,7 +7,7 @@
 // @lc code=start
 class Solution {
 public:
-    int maxCoins(vector<int>& nums) {
+    int burstBalloons(vector<int>& nums) {
         int n = nums.size();
         nums.insert(nums.begin(), 1);
         nums.push_back(1);

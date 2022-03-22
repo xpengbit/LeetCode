@@ -25,11 +25,21 @@ public:
         }
         return -1;*/
         /*sort solution, time O(nlogn), space o(1), but mutate the orginal arrary*/
-        sort(nums.begin(), nums.end());
+        /*sort(nums.begin(), nums.end());
         for(int i = 1; i < nums.size(); i++){
             if(nums[i-1] == nums[i])
                 return nums[i];
         }
+        return -1;*/
+        //indexing sort
+        nums.insert(nums.begin(), 0);
+        for(int i = 0; i < nums.size(); ++i){
+            while(i != nums[i] && nums[i] < nums.size() && nums[i] != nums[nums[i]])
+                swap(nums[i], nums[nums[i]]);
+        }
+
+        for(int i = 1; i < nums.size(); ++i)
+            if(i != nums[i]) return nums[i];
         return -1;
 
         //binary search by value

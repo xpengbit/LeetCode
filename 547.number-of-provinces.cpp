@@ -26,10 +26,8 @@ public:
         DSU dsu(n);
         for(int i = 0; i < n; ++i){
             for(int j = 0; j < n; ++j){
-                if(isConnected[i][j]){
-                    int comp1 = dsu.find(i);
-                    int comp2 = dsu.find(j);
-                    if(comp1 != comp2){
+                if(i != j && isConnected[i][j]){
+                    if(dsu.find(i) != dsu.find(j)){
                         dsu.unit(i, j);
                         res--;
                     }
@@ -62,6 +60,25 @@ private:
             parent[find(x)] = find(y);
         }
     };
+
+    class DSU{
+        vector<int> parent;
+        public:
+        DSU(int N){
+            parent = vector<int>(N);
+            for(int i = 0; i < n; ++i)
+                parent[i] = i;
+        }
+        int find(int x){
+            if(parent[x] != x)
+                parent[x] = find(parent[x]);
+            return parent[x];
+        }
+
+        void Union(int x, int y){
+            parent[find(x)] = find(y);
+        }
+    }
 };
 // @lc code=end
 

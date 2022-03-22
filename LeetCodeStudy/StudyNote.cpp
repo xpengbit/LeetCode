@@ -119,11 +119,10 @@ Example 1:
 Input: nums = [4,5,6,7,0,1,2], target = 0
 Output: 4
 
-/**/
 Class Solution{
 public:
     int search(const vector<int>& nums, int target){
-        int left = 0, right = nums.size();
+        /*int left = 0, right = nums.size();
         while(left != right){
             const int mid = left + (right - left)/2;
             if(nums[mid] == target) return mid;
@@ -141,7 +140,22 @@ public:
                     right = mid;
             }
         }
-        return -1;
+        return -1;*/
+
+        int l = 0, r = nums.size();
+        while(l < r){
+            int mid = l + (r - l)/2;
+            if(nums[mid] == target) return mid;
+            else if(nums[l] <= nums[mid]){
+                if(nums[l] <= target && target < nums[mid])
+                    r = mid;
+                else
+                    l = mid + 1;
+            }
+            else{
+                if(nums[mid] < target && target <= nums[r - 1])
+            }
+        }
     }
 }
 
@@ -231,7 +245,7 @@ public:
 class Solution{
 public:
     int longestConsecutive(const vector<int>& nums){
-        int res = 0;
+        /*int res = 0;
         unordered_set<int> s(nums.begin(), nums.end());
         for(auto val : nums){
             if(!s.count(val)) continue;
@@ -241,7 +255,18 @@ public:
             while(s.count(next)) s.erase(next++);
             res = max(res, next - pre -1);  
         }
-        return res;
+        return res;*/
+
+        int res = 0;
+        unordered_set<int> Set(nums.begin(), nums.end());
+        for(int num : nums){
+            if(Set.count(num - 1)) continue;
+            int nxt = num + 1;
+            while(Set.count(nxt))
+                nxt++;
+            res = max(res, nxt - num);
+        }
+        resturn res;
     }
 }
 
@@ -782,7 +807,11 @@ public:
 };
 
 2.1.21 Gas Station (134)
-我们首先要知道能走完整个环的前提是gas的总量要大于cost的总量，这样才会有起点的存在。假设开始设置起点start = 0, 并从这里出发，如果当前的gas值大于cost值，就可以继续前进，此时到下一个站点，剩余的gas加上当前的gas再减去cost，看是否大于0，若大于0，则继续前进。当到达某一站点时，若这个值小于0了，则说明从起点到这个点中间的任何一个点都不能作为起点，则把起点设为下一个点，继续遍历。当遍历完整个环时，当前保存的起点即为所求。
+我们首先要知道能走完整个环的前提是gas的总量要大于cost的总量，这样才会有起点的存在。假设开始设置起点start = 0, 
+并从这里出发，如果当前的gas值大于cost值，就可以继续前进，此时到下一个站点，剩余的gas加上当前的gas再减去cost，
+看是否大于0，若大于0，则继续前进。当到达某一站点时，若这个值小于0了，则说明从起点到这个点中间的任何一个点都不能作为起点，
+则把起点设为下一个点，继续遍历。当遍历完整个环时，当前保存的起点即为所求。
+
 class Solution {
 public:
     int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
@@ -812,21 +841,22 @@ class Solution {
 public:
     int candy(vector<int>& ratings) {
         /*首先初始化每个人一个糖果，然后这个算法需要遍历两遍，第一遍从左向右遍历，
-        如果右边的小盆友的等级高，等加一个糖果，这样保证了一个方向上高等级的糖果多。
+        如果右边的小盆友的等级高，增加一个糖果，这样保证了一个方向上高等级的糖果多。
         然后再从右向左遍历一遍，如果相邻两个左边的等级高，而左边的糖果又少的话，
         则左边糖果数为右边糖果数加一。最后再把所有小盆友的糖果数都加起来返回即可*/
         const size_t n = ratings.size();
-        int total = 0;]]]]
+        int total = 0;
         vector<int> res(n, 1);
-        for(int i = 0; i < n - 1; ++i){
-            if(ratings[i + 1] > ratings[i]) res[i + 1] = res[i] + 1;
+        for(int i = 1; i < n - 1; ++i){
+            if(ratings[i] > ratings[i - 1]) 
+                res[i] = res[i - 1] + 1;
         }
-        for(int i = n - 1; i > 0; --i){
-            if(ratings[i - 1] > ratings[i]) res[i - 1] = max(res[i - 1], res[i] + 1 );
+        for(int i = n - 2; i >= 0; --i){
+            if(ratings[i] > ratings[i + 1]) 
+                res[i] = max(res[i], res[i + 1] + 1 );
         }
-        for(int num : res){
-            total += num;
-        }
+        
+        total = accumulate(res.begin(), res.end(), 0);
         return total;
 
 
@@ -853,7 +883,9 @@ Given an array of integers, every element appears three times except for one. Fi
 Note: Your algorithm should have a linear runtime complexity. Could you implement it without using
 extra memory?
 
-/*这道题就是除了一个单独的数字之外，数组中其他的数字都出现了三次，还是要利用位操作 Bit Manipulation 来解。可以建立一个 32 位的数字，来统计每一位上1出现的个数，如果某一位上为1的话，那么如果该整数出现了三次，对3取余为0，这样把每个数的对应位都加起来对3取余，最终剩下来的那个数就是单独的数字。*/
+/*这道题就是除了一个单独的数字之外，数组中其他的数字都出现了三次，还是要利用位操作 Bit Manipulation 来解。
+可以建立一个 32 位的数字，来统计每一位上1出现的个数，如果某一位上为1的话，那么如果该整数出现了三次，对3取余为0，
+这样把每个数的对应位都加起来对3取余，最终剩下来的那个数就是单独的数字。*/
 class Solution {
 public:
     int singleNumber(vector<int>& nums) {
@@ -959,6 +991,17 @@ public:
         }
 
         return Dummy->next;
+    }
+
+    ListNode* reverse(ListNode* root){
+        ListNode* pre = NULL, *cur = root, *nxt;
+        while(cur){
+            nxt = cur->next;
+            cur->next = pre;
+            pre = cur;
+            cur = cur->next;
+        }
+        reuturn pre;
     }
 };
 

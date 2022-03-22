@@ -19,7 +19,9 @@ private:
 
     long nCk(int n, int k){
         if(k == 0 || n == k) return 1;
+        if(k == 1) return n;
         if(memo[n][k] != -1) return memo[n][k];
+        if(k > n - k) return nCk(n, n - k);
         return memo[n][k] = (nCk(n - 1, k - 1) + nCk(n - 1, k)) % MOD;
     }
 

@@ -8,7 +8,7 @@
 class Solution {
 public:
     int longestPalindromeSubseq(string s) {
-        /*DFS + memo solution; Will be ETL*/
+        /*DFS + memo solution; Will be TLE*/
         /*if(s.empty()) return 0;
         int n = s.size();
         m_ = vector<vector<int>>(n, vector<int>(n, -1));

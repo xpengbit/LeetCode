@@ -8,6 +8,7 @@
 class Solution {
 public:
     bool stoneGame(vector<int>& piles) {
+        //Recursion + memo
         /*int n = piles.size();
         memo = vector<vector<int>>(n, vector<int>(n, INT_MIN));
         int res = helper(piles, 0, n - 1);
