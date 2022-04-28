@@ -31,7 +31,7 @@ public:
             if(mp.count(sum))
                 res = max(res, i - mp[sum]);
             else
-                mp[sum] = i;
+                mp[sum] = i;  //因为求最大值，只需要记录最早出现的位置
         }
         return res;
     }

@@ -6,26 +6,24 @@
 
 // @lc code=start
 class FreqStack {
-    unordered_map<int, int> freq; /*value to frequence*/
-    unordered_map<int, stack<int>> mp; /*frequence to most recent*/
-    int maxFreq;
+    unordered_map<int, int> mp; /*value to frequenc*/
+    priority_queue<vector<int>> pq;
+    int pos;
 public:
     FreqStack() {
-       maxFreq = 0; 
+       pos = 0; 
     }
     
     void push(int val) {
-        freq[val]++;
-        mp[freq[val]].push(val);
-        maxFreq = max(maxFreq, freq[val]);    
+        mp[val]++;
+        pos++;
+        pq.push({mp[val], pos, val});
     }
     
     int pop() {
-        int tmp = mp[maxFreq].top();
-        mp[maxFreq].pop();
-        freq[tmp]--;
-        if(mp[maxFreq].empty()) maxFreq--;
-        return tmp;    
+        auto tmp = pq.top(); pq.pop();
+        mp[tmp[2]]--;
+        return tmp[2];    
     }
 };
 

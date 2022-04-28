@@ -11,7 +11,7 @@ class Solution {
     }
 public:
     int jobScheduling(vector<int>& startTime, vector<int>& endTime, vector<int>& profit) {
-        int n = startTime.size();
+        /*int n = startTime.size();
         vector<vector<int>> jobs;
         for(int i = 0; i < n; ++i)
             jobs.push_back({startTime[i], endTime[i], profit[i]});
@@ -29,7 +29,28 @@ public:
             ret = max(ret, cur);
         }
 
-        return ret;    
+        return ret;*/
+
+        int n = startTime.size();
+        vector<vector<int>> jobs;
+        for(int i = 0; i < n; ++i)
+            jobs.push_back({startTime[i], endTime[i], profit[i]});
+        jobs.push_back({0,0,0});
+        sort(jobs.begin(), jobs.end(), cmp);
+        vector<int> sortedEndTime;
+        for(int i = 0; i <= n; ++i)
+            sortedEndTime.push_back(jobs[i][1]);
+
+        vector<int> dp(n + 1);
+        for(int i = 1; i <= n; ++i){
+            dp[i] = dp[i - 1];
+            auto it = upper_bound(sortedEndTime.begin(), sortedEndTime.end(), jobs[i][0]);
+            if(it != sortedEndTime.begin()){
+                int k = prev(it) - sortedEndTime.begin();
+                dp[i] = max(dp[i], dp[k] + jobs[i][2]);
+            }
+        }
+        return dp[n];    
     }
 };
 // @lc code=end

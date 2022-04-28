@@ -14,7 +14,7 @@
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
-class Codec {
+/*class Codec {
 public:
 
     // Encodes a tree to a single string.
@@ -48,7 +48,47 @@ private:
         root->right = deserialize(s, pos, val, curMax);
         return root;
     }
+};*/
+
+class Codec {
+public:
+
+    // Encodes a tree to a single string.
+    string serialize(TreeNode* root) {
+        ostringstream os;
+        serialize(root, os);
+        return os.str();    
+    }
+
+    void serialize(TreeNode* root, ostringstream& os){
+        if(!root) os << "# ";  //注意这里后面跟了个空格
+        else{
+            os << root->val << " ";
+            serialize(root->left, os);
+            serialize(root->right, os);
+        }
+    }
+
+    // Decodes your encoded data to tree.
+    TreeNode* deserialize(string data) {
+        istringstream is(data);
+        return deserialize(is);
+    }
+
+
+    TreeNode* deserialize(istringstream& is){
+        string str = " ";
+        is >> str;
+        if(str == "#") return NULL;
+        int n = stoi(str);
+        TreeNode* node = new TreeNode(n);
+        node->left = deserialize(is);
+        node->right = deserialize(is);
+        
+        return node;
+    }        
 };
+
 
 // Your Codec object will be instantiated and called as such:
 // Codec* ser = new Codec();

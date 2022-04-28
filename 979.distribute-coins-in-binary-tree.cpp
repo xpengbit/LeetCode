@@ -1,7 +1,7 @@
 /*
- * @lc app=leetcode id=1448 lang=cpp
+ * @lc app=leetcode id=979 lang=cpp
  *
- * [1448] Count Good Nodes in Binary Tree
+ * [979] Distribute Coins in Binary Tree
  */
 
 // @lc code=start
@@ -18,18 +18,22 @@
  */
 class Solution {
 public:
-    int res = 0;
-    int goodNodes(TreeNode* root) {
-        dfs(root, root->val);
+    int distributeCoins(TreeNode* root) {
+        int res = 0;
+        helper(root, res);
         return res;
     }
-private:
-    void dfs(TreeNode* root, int maxPathVal){
-        if(!root) return;
-        if(root->val >= maxPathVal) res++;
-        dfs(root->left, max(maxPathVal, root->val));
-        dfs(root->right, max(maxPathVal, root->val));
+
+    int helper(TreeNode* node, int& res){
+        if(!node) return 0;
+        int left = helper(node->left, res);
+        int right = helper(node->right, res);
+
+        res += abs(left) + abs(right);
+        return left + right + node->val - 1;
     }
 };
 // @lc code=end
+
+//post-order traversal
 

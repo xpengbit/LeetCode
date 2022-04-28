@@ -24,7 +24,7 @@ public:
 class Solution {
 public:
     Node* copyRandomList(Node* head) {
-        Node* cur = head;
+        /*Node* cur = head;
         unordered_map<Node*, Node*> mp;
         while(cur !=  NULL){
             mp[cur] = new Node(cur->val);
@@ -34,7 +34,21 @@ public:
             mp[cur]->next = mp[cur->next];
             mp[cur]->random = mp[cur->random];
         }
-        return mp[head];
+        return mp[head];*/
+        if(!head) return NULL;
+        unordered_map<Node*, Node*> Map;
+        Node* cur = head;
+        while(cur){
+            Map[cur] = new Node(cur->val);
+            cur = cur->next;
+        }
+
+        for(cur = head; cur; cur = cur->next){
+            Map[cur]->next = Map[cur->next];
+            Map[cur]->random = Map[cur->random];
+        }
+
+        return Map[head];
     }
 };
 // @lc code=end

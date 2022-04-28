@@ -1086,7 +1086,7 @@ Given 1->1->1->2->3, return 2->3.
 class Solution {
 public:
     ListNode* deleteDuplicates(ListNode* head) {
-        ListNode* Dummy = new ListNode(-1);
+        ListNode* Dummy = new ListNode(-1, head);
         Dummy->next = head;
         ListNode* pre = Dummy, *cur = head;
         while(cur != NULL && cur->next != NULL){
@@ -1175,7 +1175,10 @@ Note:
 • Given n will always be valid.
 • Try to do this in one pass.
 
-/*首先要考虑的是，如何找到倒数第N个节点，由于只允许一次遍历，所以不能用一次完整的遍历来统计链表中元素的个数，而是遍历到对应位置就应该移除了。那么就需要用两个指针来帮助解题，pre 和 cur 指针。首先 cur 指针先向前走N步，如果此时 cur 指向空，说明N为链表的长度，则需要移除的为首元素，那么此时返回 head->next 即可，如果 cur 存在，再继续往下走，此时 pre 指针也跟着走，直到 cur 为最后一个元素时停止，此时 pre 指向要移除元素的前一个元素，再修改指针跳过需要移除的元素即可*/
+/*首先要考虑的是，如何找到倒数第N个节点，由于只允许一次遍历，所以不能用一次完整的遍历来统计链表中元素的个数，而是遍历到对应位置就应该移除了。
+那么就需要用两个指针来帮助解题，pre 和 cur 指针。首先 cur 指针先向前走N步，如果此时 cur 指向空，说明N为链表的长度，则需要移除的为首元素，
+那么此时返回 head->next 即可，如果 cur 存在，再继续往下走，此时 pre 指针也跟着走，直到 cur 为最后一个元素时停止，此时 pre 指向要移除元素的前一个元素，
+再修改指针跳过需要移除的元素即可*/
 class Solution {
 public:
     ListNode* removeNthFromEnd(ListNode* head, int n) {
@@ -1315,7 +1318,9 @@ private:
 A linked list is given such that each node contains an additional random pointer which could point to
 any node in the list or null.
 Return a deep copy of the list.
-/*这道链表的深度拷贝题的难点就在于如何处理随机指针的问题，由于每一个节点都有一个随机指针，这个指针可以为空，也可以指向链表的任意一个节点，如果在每生成一个新节点给其随机指针赋值时，都要去遍历原链表的话，OJ 上肯定会超时，所以可以考虑用 HashMap 来缩短查找时间，第一遍遍历生成所有新节点时同时建立一个原节点和新节点的 HashMap，第二遍给随机指针赋值时，查找时间是常数级*/
+/*这道链表的深度拷贝题的难点就在于如何处理随机指针的问题，由于每一个节点都有一个随机指针，这个指针可以为空，
+也可以指向链表的任意一个节点，如果在每生成一个新节点给其随机指针赋值时，都要去遍历原链表的话，OJ 上肯定会超时，
+所以可以考虑用 HashMap 来缩短查找时间，第一遍遍历生成所有新节点时同时建立一个原节点和新节点的 HashMap，第二遍给随机指针赋值时，查找时间是常数级*/
 
 class Solution {
 public:
