@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int minTotalDistance(vector<vector<int>>& grid) 
+    {
+        int m = grid.size();
+        int n = grid[0].size();
+        
+        vector<int> row;
+        vector<int> col;
+        for(int i = 0; i < m; ++i){
+            for(int j = 0; j < n; ++j){
+                if(grid[i][j] == 0) continue;
+                row.push_back(i);
+                col.push_back(j);
+            }
+        }
+       
+        sort(col.begin(), col.end());
+        int X = row[row.size()/2];
+        int Y = col[col.size()/2];
+
+        int res = 0;
+        for(int i = 0; i < m; ++i){
+            for(int j = 0; j < n; ++j){
+                if(grid[i][j] == 0) continue;
+                res += abs(i - X) + abs(j - Y);
+            }
+        }
+
+        return res;
+    }
+};
